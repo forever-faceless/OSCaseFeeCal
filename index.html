@@ -66,6 +66,7 @@
   .input-grid > div { min-width: 0; }
   input[type="text"], input[type="date"] {
     width: 100%;
+    min-width: 0;
     background: #1a1d23;
     border: 1px solid #353c47;
     border-radius: 6px;
@@ -76,7 +77,23 @@
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
   }
-  input[type="date"] { color-scheme: dark; }
+  input[type="date"] {
+    color-scheme: dark;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 46px;
+    display: block;
+    text-align: left;
+  }
+  input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    min-width: 0;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    margin-left: 4px;
+    padding: 0;
+    filter: invert(0.7);
+  }
   input:focus {
     border-color: #5b7bd0;
     box-shadow: 0 0 0 3px rgba(91,123,208,0.18);
