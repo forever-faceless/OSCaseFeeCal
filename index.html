@@ -75,43 +75,7 @@
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
   }
-  .date-field { position: relative; }
-  .date-field input { padding-right: 42px; }
-  .date-picker-btn {
-    position: absolute;
-    top: 50%;
-    right: 6px;
-    transform: translateY(-50%);
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    border-radius: 5px;
-    color: #8a93a1;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    transition: background 0.15s, color 0.15s;
-  }
-  .date-picker-btn:hover { background: #2a2f38; color: #f0f3f8; }
-  .date-picker-btn:focus {
-    outline: none;
-    background: #2a2f38;
-    color: #f0f3f8;
-    box-shadow: 0 0 0 2px rgba(91,123,208,0.35);
-  }
-  .date-picker-btn svg { width: 16px; height: 16px; }
-  .date-hidden {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    border: 0;
-    padding: 0;
-    color-scheme: dark;
-  }
+  input[type="date"] { color-scheme: dark; }
   input:focus {
     border-color: #5b7bd0;
     box-shadow: 0 0 0 3px rgba(91,123,208,0.18);
@@ -314,33 +278,11 @@
     <div class="input-grid">
       <div>
         <label for="initialDate">Initial Date</label>
-        <div class="date-field">
-          <input type="text" id="initialDate" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="DD/MM/YYYY" maxlength="10">
-          <input type="date" id="initialDateNative" class="date-hidden" tabindex="-1" aria-hidden="true">
-          <button type="button" tabindex="-1" class="date-picker-btn" id="initialDateBtn" aria-label="Open calendar for initial date">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </button>
-        </div>
+        <input type="date" id="initialDate" autocomplete="off">
       </div>
       <div>
         <label for="filingDate">Filing Date</label>
-        <div class="date-field">
-          <input type="text" id="filingDate" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="DD/MM/YYYY" maxlength="10">
-          <input type="date" id="filingDateNative" class="date-hidden" tabindex="-1" aria-hidden="true">
-          <button type="button" tabindex="-1" class="date-picker-btn" id="filingDateBtn" aria-label="Open calendar for filing date">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </button>
-        </div>
+        <input type="date" id="filingDate" autocomplete="off">
       </div>
     </div>
 
@@ -596,82 +538,8 @@
   }
   constrainDecimal(rateInput);
 
-  // ---- DD/MM/YYYY masked date input ----
-  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function formatDateMask(digits) {
-    digits = digits.slice(0, 8);
-    if (digits.length <= 2) return digits;
-    if (digits.length <= 4) return digits.slice(0, 2) + '/' + digits.slice(2);
-    return digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
-  }
-
-  // Parses "DD/MM/YYYY" → "YYYY-MM-DD" or null if invalid/incomplete.
-  function parseDmyToIso(s) {
-    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s.trim());
-    if (!m) return null;
-    const d = +m[1], mo = +m[2], y = +m[3];
-    if (mo < 1 || mo > 12) return null;
-    if (d < 1 || d > 31) return null;
-    if (y < 1900 || y > 2999) return null;
-    const dt = new Date(Date.UTC(y, mo - 1, d));
-    if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null;
-    return y + '-' + pad2(mo) + '-' + pad2(d);
-  }
-
-  function attachDateMask(el) {
-    el.addEventListener('keydown', function (e) {
-      const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
-      if (allowed.indexOf(e.key) !== -1) return;
-      if (e.ctrlKey || e.metaKey) return;
-      if (!/^[0-9]$/.test(e.key)) e.preventDefault();
-    });
-    el.addEventListener('input', function () {
-      const digits = el.value.replace(/\D/g, '');
-      el.value = formatDateMask(digits);
-      clearErrorState();
-    });
-    el.addEventListener('paste', function (e) {
-      e.preventDefault();
-      const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-      const digits = text.replace(/\D/g, '');
-      el.value = formatDateMask(digits);
-      clearErrorState();
-    });
-  }
-  attachDateMask(initialDateInput);
-  attachDateMask(filingDateInput);
-
-  function isoToDmy(iso) {
-    if (!iso) return '';
-    const [y, m, d] = iso.split('-');
-    return d + '/' + m + '/' + y;
-  }
-
-  function bindNativePicker(textInput, nativeInput, btn) {
-    btn.addEventListener('click', function () {
-      const iso = parseDmyToIso(textInput.value.trim());
-      if (iso) nativeInput.value = iso;
-      try {
-        if (typeof nativeInput.showPicker === 'function') nativeInput.showPicker();
-        else nativeInput.focus();
-      } catch (e) {
-        nativeInput.focus();
-      }
-    });
-    nativeInput.addEventListener('change', function () {
-      if (nativeInput.value) {
-        textInput.value = isoToDmy(nativeInput.value);
-        clearErrorState();
-      }
-    });
-  }
-  bindNativePicker(initialDateInput,
-    document.getElementById('initialDateNative'),
-    document.getElementById('initialDateBtn'));
-  bindNativePicker(filingDateInput,
-    document.getElementById('filingDateNative'),
-    document.getElementById('filingDateBtn'));
+  initialDateInput.addEventListener('input', clearErrorState);
+  filingDateInput.addEventListener('input', clearErrorState);
 
   function clearErrorState() {
     if (errorMsg.textContent) {
@@ -705,8 +573,8 @@
   function doCalculate() {
     const pRaw = principalInput.value.replace(/,/g, '').trim();
     const rRaw = rateInput.value.trim();
-    const sRawText = initialDateInput.value.trim();
-    const fRawText = filingDateInput.value.trim();
+    const sIso = initialDateInput.value;
+    const fIso = filingDateInput.value;
 
     if (pRaw === '') return showError('Please enter the principal amount.', [principalInput]);
     const principal = Number(pRaw);
@@ -718,13 +586,8 @@
     if (!isFinite(ratePct) || isNaN(ratePct) || ratePct < 0)
       return showError('Interest rate must be zero or positive.', [rateInput]);
 
-    if (!sRawText) return showError('Please enter the initial date (DD/MM/YYYY).', [initialDateInput]);
-    const sIso = parseDmyToIso(sRawText);
-    if (!sIso) return showError('Initial date must be a valid DD/MM/YYYY.', [initialDateInput]);
-
-    if (!fRawText) return showError('Please enter the filing date (DD/MM/YYYY).', [filingDateInput]);
-    const fIso = parseDmyToIso(fRawText);
-    if (!fIso) return showError('Filing date must be a valid DD/MM/YYYY.', [filingDateInput]);
+    if (!sIso) return showError('Please enter the initial date.', [initialDateInput]);
+    if (!fIso) return showError('Please enter the filing date.', [filingDateInput]);
 
     const days = daysBetween(sIso, fIso);
     if (days <= 0)
