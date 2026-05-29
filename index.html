@@ -56,10 +56,14 @@
     color: #b8c0cc;
     letter-spacing: 0.2px;
   }
-  .input-row {
-    margin-bottom: 18px;
+  .input-row { margin-bottom: 16px; }
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
   }
-  input[type="text"] {
+  input[type="text"], input[type="date"] {
     width: 100%;
     background: #1a1d23;
     border: 1px solid #353c47;
@@ -71,17 +75,55 @@
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
   }
-  input[type="text"]:focus {
+  .date-field { position: relative; }
+  .date-field input { padding-right: 42px; }
+  .date-picker-btn {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    color: #8a93a1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .date-picker-btn:hover { background: #2a2f38; color: #f0f3f8; }
+  .date-picker-btn:focus {
+    outline: none;
+    background: #2a2f38;
+    color: #f0f3f8;
+    box-shadow: 0 0 0 2px rgba(91,123,208,0.35);
+  }
+  .date-picker-btn svg { width: 16px; height: 16px; }
+  .date-hidden {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    border: 0;
+    padding: 0;
+    color-scheme: dark;
+  }
+  input:focus {
     border-color: #5b7bd0;
     box-shadow: 0 0 0 3px rgba(91,123,208,0.18);
   }
-  input[type="text"].error {
+  input.error {
     border-color: #c0524a;
     box-shadow: 0 0 0 3px rgba(192,82,74,0.15);
   }
   .btn-row {
     display: flex;
     gap: 10px;
+    margin-top: 6px;
   }
   .btn-calc, .btn-clear {
     color: #f0f3f8;
@@ -167,6 +209,24 @@
     color: #f0f3f8;
     font-weight: 500;
   }
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+    margin-top: 4px;
+  }
+  .breakdown-item .k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #8a93a1;
+    margin-bottom: 2px;
+  }
+  .breakdown-item .v {
+    font-size: 14px;
+    color: #f0f3f8;
+    font-weight: 500;
+  }
   .copy-btn {
     background: #2a2f38;
     border: 1px solid #3a4150;
@@ -237,22 +297,54 @@
 <body>
   <div class="container" role="main">
     <header>
-      <h1>Karnataka Court Fee &amp; Advocate Fee Calculator</h1>
+      <h1>OS Case Court Fee &amp; Advocate Fee Calculator</h1>
       <p>Karnataka Court Fees &amp; Suits Valuation Act, 1958</p>
     </header>
 
     <div class="input-row">
-      <label for="suitValue">Enter Suit Value (₹)</label>
-      <input
-        type="text"
-        id="suitValue"
-        inputmode="numeric"
-        autocomplete="off"
-        spellcheck="false"
-        aria-describedby="errorMsg"
-        placeholder="e.g. 750000">
-      <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
+      <label for="principal">Principal Amount (₹)</label>
+      <input type="text" id="principal" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 5,00,000">
     </div>
+
+    <div class="input-row">
+      <label for="rate">Interest Rate (% p.a.)</label>
+      <input type="text" id="rate" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="e.g. 8.5">
+    </div>
+
+    <div class="input-grid">
+      <div>
+        <label for="initialDate">Initial Date</label>
+        <div class="date-field">
+          <input type="text" id="initialDate" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="DD/MM/YYYY" maxlength="10">
+          <input type="date" id="initialDateNative" class="date-hidden" tabindex="-1" aria-hidden="true">
+          <button type="button" tabindex="-1" class="date-picker-btn" id="initialDateBtn" aria-label="Open calendar for initial date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div>
+        <label for="filingDate">Filing Date</label>
+        <div class="date-field">
+          <input type="text" id="filingDate" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="DD/MM/YYYY" maxlength="10">
+          <input type="date" id="filingDateNative" class="date-hidden" tabindex="-1" aria-hidden="true">
+          <button type="button" tabindex="-1" class="date-picker-btn" id="filingDateBtn" aria-label="Open calendar for filing date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
 
     <div class="btn-row">
       <button type="button" class="btn-calc" id="calcBtn">Calculate</button>
@@ -264,6 +356,17 @@
     </div>
 
     <div class="results" id="results" aria-live="polite">
+      <div class="result-card">
+        <div class="result-label">Interest &amp; Net Amount</div>
+        <div class="result-slab" id="interestSlab"></div>
+        <div class="breakdown-grid">
+          <div class="breakdown-item"><div class="k">Days</div><div class="v" id="daysValue">0</div></div>
+          <div class="breakdown-item"><div class="k">Daily Interest</div><div class="v" id="dailyValue">₹0</div></div>
+          <div class="breakdown-item"><div class="k">Total Interest</div><div class="v" id="interestValue">₹0</div></div>
+          <div class="breakdown-item"><div class="k">Net (Suit Value)</div><div class="v" id="netValue">₹0</div></div>
+        </div>
+      </div>
+
       <div class="result-card">
         <div class="result-label">Court Fee</div>
         <div class="result-slab" id="courtFeeSlab"></div>
@@ -280,11 +383,11 @@
       </div>
 
       <div class="result-card">
-        <div class="result-label">Advocate Fee</div>
+        <div class="result-label">Advocate Fee — Initial Payment (½)</div>
         <div class="result-slab" id="advocateFeeSlab"></div>
         <div class="result-header">
           <div class="result-value" id="advocateFeeValue">₹0</div>
-          <button type="button" class="copy-btn" id="copyAdvocate" aria-label="Copy advocate fee amount">
+          <button type="button" class="copy-btn" id="copyAdvocate" aria-label="Copy advocate fee initial payment">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -401,11 +504,34 @@
     return '₹' + Number(n).toLocaleString('en-IN');
   }
 
-  const input = document.getElementById('suitValue');
+  function formatINRDecimal(n) {
+    return '₹' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Whole days between two yyyy-mm-dd strings, treating dates as UTC midnight
+  // to avoid DST artifacts. Per spec: include initial date, exclude filing date,
+  // which is exactly (filing - initial) in days.
+  function daysBetween(startStr, endStr) {
+    const [sy, sm, sd] = startStr.split('-').map(Number);
+    const [ey, em, ed] = endStr.split('-').map(Number);
+    const start = Date.UTC(sy, sm - 1, sd);
+    const end = Date.UTC(ey, em - 1, ed);
+    return Math.round((end - start) / 86400000);
+  }
+
+  const principalInput = document.getElementById('principal');
+  const rateInput = document.getElementById('rate');
+  const initialDateInput = document.getElementById('initialDate');
+  const filingDateInput = document.getElementById('filingDate');
   const calcBtn = document.getElementById('calcBtn');
   const clearBtn = document.getElementById('clearBtn');
   const errorMsg = document.getElementById('errorMsg');
   const results = document.getElementById('results');
+  const interestSlab = document.getElementById('interestSlab');
+  const daysValue = document.getElementById('daysValue');
+  const dailyValue = document.getElementById('dailyValue');
+  const interestValue = document.getElementById('interestValue');
+  const netValue = document.getElementById('netValue');
   const courtFeeValue = document.getElementById('courtFeeValue');
   const courtFeeSlab = document.getElementById('courtFeeSlab');
   const advocateFeeValue = document.getElementById('advocateFeeValue');
@@ -416,17 +542,9 @@
   const copyAdvocateFeedback = document.getElementById('copyAdvocateFeedback');
 
   let courtFeeRaw = 0;
-  let advocateFeeRaw = 0;
+  let advocateHalfRaw = 0;
 
-  input.addEventListener('keydown', function (e) {
-    const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
-    if (allowed.indexOf(e.key) !== -1) return;
-    if (e.ctrlKey || e.metaKey) return;
-    if (!/^[0-9]$/.test(e.key)) {
-      e.preventDefault();
-    }
-  });
-
+  // Indian-numbering input formatter for principal (preserves caret).
   function countDigits(str, upto) {
     let n = 0;
     for (let i = 0; i < upto && i < str.length; i++) {
@@ -434,7 +552,6 @@
     }
     return n;
   }
-
   function caretAfterNthDigit(str, n) {
     if (n <= 0) return 0;
     let count = 0;
@@ -446,74 +563,218 @@
     }
     return str.length;
   }
-
-  input.addEventListener('input', function () {
-    const prev = input.value;
-    const selStart = input.selectionStart || 0;
+  principalInput.addEventListener('keydown', function (e) {
+    const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
+    if (allowed.indexOf(e.key) !== -1) return;
+    if (e.ctrlKey || e.metaKey) return;
+    if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+  });
+  principalInput.addEventListener('input', function () {
+    const prev = principalInput.value;
+    const selStart = principalInput.selectionStart || 0;
     const digitsBefore = countDigits(prev, selStart);
     const digitsOnly = prev.replace(/[^0-9]/g, '').replace(/^0+(?=\d)/, '');
     const formatted = digitsOnly === '' ? '' : Number(digitsOnly).toLocaleString('en-IN');
     if (formatted !== prev) {
-      input.value = formatted;
+      principalInput.value = formatted;
       const newPos = caretAfterNthDigit(formatted, digitsBefore);
-      try { input.setSelectionRange(newPos, newPos); } catch (e) {}
+      try { principalInput.setSelectionRange(newPos, newPos); } catch (e) {}
     }
-    if (errorMsg.textContent) {
-      errorMsg.textContent = '';
-      input.classList.remove('error');
-    }
+    clearErrorState();
   });
 
-  function showError(msg) {
+  // Decimal-only constraint for rate.
+  function constrainDecimal(el) {
+    el.addEventListener('keydown', function (e) {
+      const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
+      if (allowed.indexOf(e.key) !== -1) return;
+      if (e.ctrlKey || e.metaKey) return;
+      if (e.key === '.' && el.value.indexOf('.') === -1) return;
+      if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+    });
+    el.addEventListener('input', clearErrorState);
+  }
+  constrainDecimal(rateInput);
+
+  // ---- DD/MM/YYYY masked date input ----
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function formatDateMask(digits) {
+    digits = digits.slice(0, 8);
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 4) return digits.slice(0, 2) + '/' + digits.slice(2);
+    return digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
+  }
+
+  // Parses "DD/MM/YYYY" → "YYYY-MM-DD" or null if invalid/incomplete.
+  function parseDmyToIso(s) {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s.trim());
+    if (!m) return null;
+    const d = +m[1], mo = +m[2], y = +m[3];
+    if (mo < 1 || mo > 12) return null;
+    if (d < 1 || d > 31) return null;
+    if (y < 1900 || y > 2999) return null;
+    const dt = new Date(Date.UTC(y, mo - 1, d));
+    if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null;
+    return y + '-' + pad2(mo) + '-' + pad2(d);
+  }
+
+  function attachDateMask(el) {
+    el.addEventListener('keydown', function (e) {
+      const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
+      if (allowed.indexOf(e.key) !== -1) return;
+      if (e.ctrlKey || e.metaKey) return;
+      if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+    });
+    el.addEventListener('input', function () {
+      const digits = el.value.replace(/\D/g, '');
+      el.value = formatDateMask(digits);
+      clearErrorState();
+    });
+    el.addEventListener('paste', function (e) {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+      const digits = text.replace(/\D/g, '');
+      el.value = formatDateMask(digits);
+      clearErrorState();
+    });
+  }
+  attachDateMask(initialDateInput);
+  attachDateMask(filingDateInput);
+
+  function isoToDmy(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return d + '/' + m + '/' + y;
+  }
+
+  function bindNativePicker(textInput, nativeInput, btn) {
+    btn.addEventListener('click', function () {
+      const iso = parseDmyToIso(textInput.value.trim());
+      if (iso) nativeInput.value = iso;
+      try {
+        if (typeof nativeInput.showPicker === 'function') nativeInput.showPicker();
+        else nativeInput.focus();
+      } catch (e) {
+        nativeInput.focus();
+      }
+    });
+    nativeInput.addEventListener('change', function () {
+      if (nativeInput.value) {
+        textInput.value = isoToDmy(nativeInput.value);
+        clearErrorState();
+      }
+    });
+  }
+  bindNativePicker(initialDateInput,
+    document.getElementById('initialDateNative'),
+    document.getElementById('initialDateBtn'));
+  bindNativePicker(filingDateInput,
+    document.getElementById('filingDateNative'),
+    document.getElementById('filingDateBtn'));
+
+  function clearErrorState() {
+    if (errorMsg.textContent) {
+      errorMsg.textContent = '';
+      [principalInput, rateInput, initialDateInput, filingDateInput]
+        .forEach(el => el.classList.remove('error'));
+    }
+  }
+
+  function showError(msg, fields) {
     errorMsg.textContent = msg;
-    input.classList.add('error');
+    [principalInput, rateInput, initialDateInput, filingDateInput]
+      .forEach(el => el.classList.remove('error'));
+    (fields || []).forEach(el => el.classList.add('error'));
     results.classList.remove('visible');
   }
 
   function clearAll() {
-    input.value = '';
+    principalInput.value = '';
+    rateInput.value = '';
+    initialDateInput.value = '';
+    filingDateInput.value = '';
     errorMsg.textContent = '';
-    input.classList.remove('error');
+    [principalInput, rateInput, initialDateInput, filingDateInput]
+      .forEach(el => el.classList.remove('error'));
     results.classList.remove('visible');
     clearBtn.classList.remove('visible');
-    input.focus();
+    principalInput.focus();
   }
 
   function doCalculate() {
-    const raw = input.value.replace(/,/g, '').trim();
-    if (raw === '') {
-      showError('Please enter a suit value.');
-      return;
-    }
-    const val = Number(raw);
-    if (!isFinite(val) || isNaN(val) || val < 0) {
-      showError('Please enter a valid positive number.');
-      return;
-    }
-    errorMsg.textContent = '';
-    input.classList.remove('error');
+    const pRaw = principalInput.value.replace(/,/g, '').trim();
+    const rRaw = rateInput.value.trim();
+    const sRawText = initialDateInput.value.trim();
+    const fRawText = filingDateInput.value.trim();
 
-    const court = calculateCourtFee(val);
-    const advocate = calculateAdvocateFee(val);
+    if (pRaw === '') return showError('Please enter the principal amount.', [principalInput]);
+    const principal = Number(pRaw);
+    if (!isFinite(principal) || isNaN(principal) || principal <= 0)
+      return showError('Principal must be a positive number.', [principalInput]);
+
+    if (rRaw === '') return showError('Please enter the interest rate.', [rateInput]);
+    const ratePct = Number(rRaw);
+    if (!isFinite(ratePct) || isNaN(ratePct) || ratePct < 0)
+      return showError('Interest rate must be zero or positive.', [rateInput]);
+
+    if (!sRawText) return showError('Please enter the initial date (DD/MM/YYYY).', [initialDateInput]);
+    const sIso = parseDmyToIso(sRawText);
+    if (!sIso) return showError('Initial date must be a valid DD/MM/YYYY.', [initialDateInput]);
+
+    if (!fRawText) return showError('Please enter the filing date (DD/MM/YYYY).', [filingDateInput]);
+    const fIso = parseDmyToIso(fRawText);
+    if (!fIso) return showError('Filing date must be a valid DD/MM/YYYY.', [filingDateInput]);
+
+    const days = daysBetween(sIso, fIso);
+    if (days <= 0)
+      return showError('Filing date must be after the initial date.', [initialDateInput, filingDateInput]);
+
+    clearErrorState();
+
+    const rateDec = ratePct / 100;
+    // Per advocate workflow: Interest = P × (days/365) × R, equivalently
+    // (P × R / 365) × days. Days count includes initial date, excludes
+    // filing date → simply (filing − initial).
+    const dailyInterest = (principal * rateDec) / 365;
+    const totalInterest = dailyInterest * days;
+    const netAmount = principal + totalInterest;
+
+    const court = calculateCourtFee(netAmount);
+    const advocate = calculateAdvocateFee(netAmount);
+    const advocateHalf = Math.round(advocate.fee / 2);
 
     courtFeeRaw = court.fee;
-    advocateFeeRaw = advocate.fee;
+    advocateHalfRaw = advocateHalf;
+
+    daysValue.textContent = days.toLocaleString('en-IN');
+    dailyValue.textContent = formatINRDecimal(dailyInterest);
+    interestValue.textContent = formatINRDecimal(totalInterest);
+    netValue.textContent = formatINR(Math.round(netAmount));
+
+    interestSlab.innerHTML =
+      'Daily SI = <span class="hl">' + formatINRDecimal(dailyInterest) + '</span>'
+      + ' (P × R ÷ 365) · '
+      + days.toLocaleString('en-IN') + ' days × daily = '
+      + '<span class="hl">' + formatINRDecimal(totalInterest) + '</span>'
+      + ' interest · Net = Principal + Interest = '
+      + hl(Math.round(netAmount));
 
     courtFeeValue.textContent = formatINR(court.fee);
-    advocateFeeValue.textContent = formatINR(advocate.fee);
+    courtFeeSlab.innerHTML = describeSlab(courtSlabs, Math.round(netAmount));
 
-    courtFeeSlab.innerHTML = describeSlab(courtSlabs, val);
-    let advText = describeSlab(advocateSlabs, val);
+    advocateFeeValue.textContent = formatINR(advocateHalf);
+    let advText = describeSlab(advocateSlabs, Math.round(netAmount));
+    if (advText) advText += ' · Full advocate fee ' + hl(advocate.fee) + ', half = ' + hl(advocateHalf);
     if (advText && advocate.fee === 500) {
-      const computed = (val <= 5000) ? val * 0.10
-        : (val <= 10000) ? 500 + (val - 5000) * 0.075
-        : (val <= 20000) ? 875 + (val - 10000) * 0.055
-        : (val <= 50000) ? 1425 + (val - 20000) * 0.040
-        : (val <= 100000) ? 2625 + (val - 50000) * 0.030
-        : 4125 + (val - 100000) * 0.015;
-      if (Math.round(computed) < 500) {
-        advText += ' · Minimum ' + hl(500) + ' applied';
-      }
+      const v = Math.round(netAmount);
+      const computed = (v <= 5000) ? v * 0.10
+        : (v <= 10000) ? 500 + (v - 5000) * 0.075
+        : (v <= 20000) ? 875 + (v - 10000) * 0.055
+        : (v <= 50000) ? 1425 + (v - 20000) * 0.040
+        : (v <= 100000) ? 2625 + (v - 50000) * 0.030
+        : 4125 + (v - 100000) * 0.015;
+      if (Math.round(computed) < 500) advText += ' · Minimum ' + hl(500) + ' applied';
     }
     advocateFeeSlab.innerHTML = advText;
 
@@ -526,10 +787,9 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
-      const tag = (e.target && e.target.tagName) || '';
       if (e.target === copyCourt || e.target === copyAdvocate) return;
-      if (e.target === calcBtn) { e.preventDefault(); doCalculate(); return; }
-      if (e.target === input || tag === 'BODY') {
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'BODY' || e.target === calcBtn) {
         e.preventDefault();
         doCalculate();
       }
@@ -565,9 +825,7 @@
   }
 
   function bindCopy(btn, getAmount, feedbackEl) {
-    btn.addEventListener('click', function () {
-      copyAmount(getAmount(), feedbackEl);
-    });
+    btn.addEventListener('click', function () { copyAmount(getAmount(), feedbackEl); });
     btn.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -577,9 +835,9 @@
   }
 
   bindCopy(copyCourt, () => courtFeeRaw, copyCourtFeedback);
-  bindCopy(copyAdvocate, () => advocateFeeRaw, copyAdvocateFeedback);
+  bindCopy(copyAdvocate, () => advocateHalfRaw, copyAdvocateFeedback);
 
-  input.focus();
+  principalInput.focus();
 })();
 </script>
 </body>
