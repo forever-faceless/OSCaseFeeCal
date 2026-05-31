@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Court Fee Calculator</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="page-nav" aria-label="Calculator navigation">
+    <a href="index.html">OS Case</a>
+    <a href="court-fee.html" class="active">Court Fee</a>
+    <a href="advocate-fee.html">Advocate Fee</a>
+  </nav>
+  <div class="container" role="main">
+    <header>
+      <h1>Court Fee Calculator</h1>
+      <p>Karnataka Court Fees &amp; Suits Valuation Act, 1958</p>
+    </header>
+
+    <div class="input-row">
+      <label for="amount">Amount (₹)</label>
+      <input type="text" id="amount" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 1,00,000 or 80000+20000">
+    </div>
+
+    <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
+
+    <div class="btn-row">
+      <button type="button" class="btn-calc" id="calcBtn">Calculate</button>
+      <button type="button" class="btn-clear" id="clearBtn">Clear</button>
+    </div>
+
+    <div class="hint">
+      <kbd>Enter</kbd> calculate &nbsp;·&nbsp; <kbd>Esc</kbd> clear
+    </div>
+
+    <div class="results" id="results" aria-live="polite">
+      <div class="result-card">
+        <div class="result-label">Court Fee</div>
+        <div class="result-header">
+          <div class="result-value" id="feeValue">₹0</div>
+          <button type="button" class="copy-btn" id="copyBtn" aria-label="Copy court fee amount">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="copy-feedback" id="copyFeedback">Copied!</span>
+          </button>
+        </div>
+        <div class="result-slab result-slab-after" id="feeSlab"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    As per Karnataka Court Fees &amp; Suits Valuation Act, 1958 | Rule 100, Karnataka Civil Rules
+  </footer>
+
+<script src="lib.js" defer></script>
+<script src="court-fee.js" defer></script>
+</body>
+</html>
