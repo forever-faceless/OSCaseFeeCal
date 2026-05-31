@@ -296,6 +296,291 @@
     .result-value { font-size: 17px; }
     .hint { font-size: 10.5px; }
   }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #232830;
+    border: 1px solid #3a4150;
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .modal h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f0f3f8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #b8c0cc;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .modal-field input {
+    width: 100%;
+    background: #1a1d23;
+    border: 1px solid #353c47;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #f0f3f8;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .modal-field input:focus {
+    border-color: #5b7bd0;
+    box-shadow: 0 0 0 3px rgba(91,123,208,0.18);
+  }
+  .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-modal-cancel {
+    flex: 1;
+    background: #2a2f38;
+    border: 1px solid #3a4150;
+    border-radius: 6px;
+    color: #b8c0cc;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .btn-modal-cancel:hover { background: #353c47; color: #f0f3f8; }
+  .btn-modal-print {
+    flex: 2;
+    background: #3a5089;
+    border: 1px solid #4a609e;
+    border-radius: 6px;
+    color: #f0f3f8;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: background 0.15s;
+  }
+  .btn-modal-print:hover { background: #45599a; }
+  .btn-modal-print svg { width: 14px; height: 14px; }
+
+  /* Print sheet — hidden on screen */
+  .print-header { display: none; }
+
+  /* Print button */
+  .btn-print-row {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn-print {
+    background: #2a2f38;
+    border: 1px solid #3a4150;
+    border-radius: 6px;
+    color: #b8c0cc;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 9px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.3px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .btn-print:hover { background: #353c47; color: #f0f3f8; }
+  .btn-print:focus {
+    outline: none;
+    border-color: #5b7bd0;
+    box-shadow: 0 0 0 3px rgba(91,123,208,0.25);
+  }
+  .btn-print svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  @media print {
+    @page { margin: 15mm; }
+
+    body {
+      background: white !important;
+      color: #111 !important;
+      padding: 0 !important;
+      display: block !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    header, .input-row, .input-grid, .error-msg,
+    .btn-row, .hint, footer, .results,
+    .btn-print-row, .modal-overlay {
+      display: none !important;
+    }
+
+    .container {
+      max-width: 100% !important;
+      background: white !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    /* ── Calculation Sheet layout ── */
+    .print-header {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #111;
+    }
+
+    .sheet-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
+
+    .sheet-row {
+      font-size: 14px;
+      color: #111;
+      margin-bottom: 11px;
+      line-height: 1.5;
+    }
+
+    .sheet-two {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .sheet-dates {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .sl { font-weight: 700; }
+
+    .sv {
+      display: inline-block;
+      min-width: 110px;
+      border-bottom: 1px solid #888;
+      padding: 0 4px 1px;
+    }
+
+    .sheet-spacer { height: 8px; display: block; }
+
+    .sheet-formula-block {
+      margin-bottom: 11px;
+    }
+
+    .sheet-formula-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .sheet-formula-line:last-child { margin-bottom: 0; }
+
+    .sheet-subst-line {
+      padding-left: 112px;
+    }
+
+    .sfrac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+    }
+
+    .snum {
+      border-bottom: 1.5px solid #111;
+      padding-bottom: 2px;
+      font-size: 13px;
+    }
+
+    .sden {
+      font-size: 13px;
+      padding-top: 2px;
+    }
+
+    .sheet-net-row {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .sv-big {
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 2px double #111;
+      min-width: 140px;
+    }
+
+    .sheet-divider {
+      border: none;
+      border-top: 1.5px solid #333;
+      margin: 16px 0;
+    }
+
+    .sheet-fee-block {
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .sheet-fee-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #555;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .sheet-slab-text {
+      font-size: 12px;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .sheet-slab-text .hl {
+      color: #111;
+      font-weight: 700;
+    }
+
+    .sheet-fee-amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      font-family: Georgia, serif;
+    }
+  }
 </style>
 </head>
 <body>
@@ -335,6 +620,71 @@
 
     <div class="hint">
       <kbd>Enter</kbd> calculate &nbsp;·&nbsp; <kbd>Esc</kbd> clear &nbsp;·&nbsp; <kbd>Tab</kbd> navigate
+    </div>
+
+    <div class="print-header" id="printHeader">
+      <div class="sheet-title">Calculation Sheet</div>
+
+      <div class="sheet-row sheet-two">
+        <div><span class="sl">Name:</span> <span class="sv" id="pName"></span></div>
+        <div><span class="sl">Bank Name:</span> <span class="sv" id="pBank"></span></div>
+      </div>
+      <div class="sheet-row">
+        <span class="sl">A/c no:</span> <span class="sv" id="pAcc"></span>
+      </div>
+      <div class="sheet-row">
+        <span class="sl">Amount:</span> <span class="sv" id="pAmount"></span>
+      </div>
+      <div class="sheet-row">
+        <span class="sl">Interest Rate:</span> <span class="sv" id="pRate"></span>
+      </div>
+      <div class="sheet-row sheet-dates">
+        <span><span class="sl">Initial Date:</span> <span class="sv" id="pInitDate"></span></span>
+        <span class="sl">to</span>
+        <span><span class="sl">Filing date:</span> <span class="sv" id="pFilDate"></span></span>
+      </div>
+
+      <span class="sheet-spacer"></span>
+
+      <div class="sheet-row">
+        <span class="sl">No. of Days:</span> <span class="sv" id="pDays"></span>
+      </div>
+      <div class="sheet-formula-block">
+        <div class="sheet-formula-line">
+          <span class="sl">Daily interest:</span>
+          <span class="sfrac"><span class="snum">Amount &times; Interest</span><span class="sden">365</span></span>
+          <span>= <span class="sv" id="pDaily"></span></span>
+        </div>
+        <div class="sheet-formula-line sheet-subst-line">
+          <span class="sfrac"><span class="snum" id="pDailySubstNum"></span><span class="sden">365</span></span>
+          <span>= <span class="sv" id="pDailySubst"></span></span>
+        </div>
+      </div>
+      <div class="sheet-formula-block">
+        <div class="sheet-formula-line">
+          <span class="sl">Total interest:</span>
+          <span>Daily interest &times; No. of days = <span class="sv" id="pInterest"></span></span>
+        </div>
+        <div class="sheet-formula-line sheet-subst-line">
+          <span><span id="pTotalSubst"></span> = <span class="sv" id="pTotalSubstResult"></span></span>
+        </div>
+      </div>
+      <div class="sheet-row sheet-net-row">
+        <span class="sl">Net Suit Value:</span> <span class="sv sv-big" id="pNet"></span>
+      </div>
+
+      <hr class="sheet-divider">
+
+      <div class="sheet-fee-block">
+        <div class="sheet-fee-label">Court Fee</div>
+        <div class="sheet-slab-text" id="pCourtSlab"></div>
+        <div class="sheet-fee-amount" id="pCourtFee"></div>
+      </div>
+      <div class="sheet-fee-block">
+        <div class="sheet-fee-label">Advocate Fee &mdash; Initial Payment (&frac12;)</div>
+        <div class="sheet-slab-text" id="pAdvSlab"></div>
+        <div class="sheet-fee-amount" id="pAdvFee"></div>
+      </div>
     </div>
 
     <div class="results" id="results" aria-live="polite">
@@ -378,12 +728,52 @@
           </button>
         </div>
       </div>
+
+      <div class="btn-print-row">
+        <button type="button" class="btn-print" id="printBtn" aria-label="Print calculation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print
+        </button>
+      </div>
     </div>
   </div>
 
   <footer>
     As per Karnataka Court Fees &amp; Suits Valuation Act, 1958 | Rule 100, Karnataka Civil Rules
   </footer>
+
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <h3 id="modalTitle">Client Details</h3>
+      <div class="modal-field">
+        <label for="modalName">Name</label>
+        <input type="text" id="modalName" autocomplete="off" spellcheck="false" placeholder="Client / party name">
+      </div>
+      <div class="modal-field">
+        <label for="modalBank">Bank Name</label>
+        <input type="text" id="modalBank" autocomplete="off" spellcheck="false" placeholder="Bank name">
+      </div>
+      <div class="modal-field">
+        <label for="modalAcc">A/c No.</label>
+        <input type="text" id="modalAcc" autocomplete="off" spellcheck="false" placeholder="Account number">
+      </div>
+      <div class="modal-btn-row">
+        <button type="button" class="btn-modal-cancel" id="modalCancel">Cancel</button>
+        <button type="button" class="btn-modal-print" id="modalPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print Sheet
+        </button>
+      </div>
+    </div>
+  </div>
 
 <script>
 (function () {
@@ -490,6 +880,11 @@
     return '₹' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  function formatDateDisplay(iso) {
+    const [y, m, d] = iso.split('-');
+    return d + '/' + m + '/' + y;
+  }
+
   // Whole days between two yyyy-mm-dd strings, treating dates as UTC midnight
   // to avoid DST artifacts. Per spec: include initial date, exclude filing date,
   // which is exactly (filing - initial) in days.
@@ -522,6 +917,32 @@
   const copyAdvocate = document.getElementById('copyAdvocate');
   const copyCourtFeedback = document.getElementById('copyCourtFeedback');
   const copyAdvocateFeedback = document.getElementById('copyAdvocateFeedback');
+  const printBtn = document.getElementById('printBtn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalName = document.getElementById('modalName');
+  const modalBank = document.getElementById('modalBank');
+  const modalAcc = document.getElementById('modalAcc');
+  const modalCancel = document.getElementById('modalCancel');
+  const modalPrint = document.getElementById('modalPrint');
+  const pName = document.getElementById('pName');
+  const pBank = document.getElementById('pBank');
+  const pAcc = document.getElementById('pAcc');
+  const pAmount = document.getElementById('pAmount');
+  const pRate = document.getElementById('pRate');
+  const pInitDate = document.getElementById('pInitDate');
+  const pFilDate = document.getElementById('pFilDate');
+  const pDays = document.getElementById('pDays');
+  const pDaily = document.getElementById('pDaily');
+  const pInterest = document.getElementById('pInterest');
+  const pNet = document.getElementById('pNet');
+  const pCourtFee = document.getElementById('pCourtFee');
+  const pAdvFee = document.getElementById('pAdvFee');
+  const pDailySubstNum = document.getElementById('pDailySubstNum');
+  const pDailySubst = document.getElementById('pDailySubst');
+  const pTotalSubst = document.getElementById('pTotalSubst');
+  const pTotalSubstResult = document.getElementById('pTotalSubstResult');
+  const pCourtSlab = document.getElementById('pCourtSlab');
+  const pAdvSlab = document.getElementById('pAdvSlab');
 
   let courtFeeRaw = 0;
   let advocateHalfRaw = 0;
@@ -664,7 +1085,8 @@
       + hl(Math.round(netAmount));
 
     courtFeeValue.textContent = formatINR(court.fee);
-    courtFeeSlab.innerHTML = describeSlab(courtSlabs, Math.round(netAmount));
+    const courtSlabHtml = describeSlab(courtSlabs, Math.round(netAmount));
+    courtFeeSlab.innerHTML = courtSlabHtml;
 
     advocateFeeValue.textContent = formatINR(advocateHalf);
     let advText = describeSlab(advocateSlabs, Math.round(netAmount));
@@ -681,6 +1103,24 @@
     }
     advocateFeeSlab.innerHTML = advText;
 
+    pCourtSlab.innerHTML = courtSlabHtml;
+    pAdvSlab.innerHTML = advText;
+
+    pAmount.textContent = formatINR(principal);
+    pRate.textContent = ratePct + '% p.a.';
+    pInitDate.textContent = formatDateDisplay(sIso);
+    pFilDate.textContent = formatDateDisplay(fIso);
+    pDays.textContent = days.toLocaleString('en-IN');
+    pDaily.textContent = formatINRDecimal(dailyInterest);
+    pInterest.textContent = formatINRDecimal(totalInterest);
+    pNet.textContent = formatINR(Math.round(netAmount));
+    pCourtFee.textContent = formatINR(court.fee);
+    pAdvFee.textContent = formatINR(advocateHalf);
+    pDailySubstNum.textContent = formatINR(principal) + ' × ' + ratePct + '%';
+    pDailySubst.textContent = formatINRDecimal(dailyInterest);
+    pTotalSubst.textContent = formatINRDecimal(dailyInterest) + ' × ' + days.toLocaleString('en-IN') + ' days';
+    pTotalSubstResult.textContent = formatINRDecimal(totalInterest);
+
     results.classList.add('visible');
     clearBtn.classList.add('visible');
   }
@@ -688,17 +1128,57 @@
   calcBtn.addEventListener('click', doCalculate);
   clearBtn.addEventListener('click', clearAll);
 
+  function openModal() {
+    modalName.value = '';
+    modalBank.value = '';
+    modalAcc.value = '';
+    modalOverlay.classList.add('open');
+    setTimeout(function () { modalName.focus(); }, 50);
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+  }
+
+  function doPrint() {
+    pName.textContent = modalName.value.trim() || '';
+    pBank.textContent = modalBank.value.trim() || '';
+    pAcc.textContent = modalAcc.value.trim() || '';
+    closeModal();
+    window.print();
+  }
+
+  printBtn.addEventListener('click', openModal);
+  modalCancel.addEventListener('click', closeModal);
+  modalPrint.addEventListener('click', doPrint);
+
+  modalOverlay.addEventListener('click', function (e) {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  [modalName, modalBank, modalAcc].forEach(function (inp) {
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); doPrint(); }
+      if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+    });
+  });
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
-      if (e.target === copyCourt || e.target === copyAdvocate) return;
+      if (e.target === copyCourt || e.target === copyAdvocate || e.target === printBtn) return;
+      if (modalOverlay.classList.contains('open')) return;
       const tag = (e.target && e.target.tagName) || '';
       if (tag === 'INPUT' || tag === 'BODY' || e.target === calcBtn) {
         e.preventDefault();
         doCalculate();
       }
     } else if (e.key === 'Escape') {
-      e.preventDefault();
-      clearAll();
+      if (modalOverlay.classList.contains('open')) {
+        closeModal();
+      } else {
+        e.preventDefault();
+        clearAll();
+      }
     }
   });
 
