@@ -478,6 +478,8 @@
       display: flex;
       align-items: baseline;
       gap: 16px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .sl { font-weight: 700; }
@@ -642,20 +644,11 @@
         <span><span class="sl">Initial Date:</span> <span class="sv" id="pInitDate"></span></span>
         <span class="sl">to</span>
         <span><span class="sl">Filing date:</span> <span class="sv" id="pFilDate"></span></span>
-      </div>
-
-      <span class="sheet-spacer"></span>
-
-      <div class="sheet-row">
-        <span class="sl">No. of Days:</span> <span class="sv" id="pDays"></span>
+        <span style="white-space:nowrap"><span class="sl">= No. of days:</span> <span class="sv" id="pDays"></span></span>
       </div>
       <div class="sheet-formula-block">
         <div class="sheet-formula-line">
           <span class="sl">Daily interest:</span>
-          <span class="sfrac"><span class="snum">Amount &times; Interest</span><span class="sden">365</span></span>
-          <span>= <span class="sv" id="pDaily"></span></span>
-        </div>
-        <div class="sheet-formula-line sheet-subst-line">
           <span class="sfrac"><span class="snum" id="pDailySubstNum"></span><span class="sden">365</span></span>
           <span>= <span class="sv" id="pDailySubst"></span></span>
         </div>
@@ -663,14 +656,12 @@
       <div class="sheet-formula-block">
         <div class="sheet-formula-line">
           <span class="sl">Total interest:</span>
-          <span>Daily interest &times; No. of days = <span class="sv" id="pInterest"></span></span>
-        </div>
-        <div class="sheet-formula-line sheet-subst-line">
           <span><span id="pTotalSubst"></span> = <span class="sv" id="pTotalSubstResult"></span></span>
         </div>
       </div>
       <div class="sheet-row sheet-net-row">
-        <span class="sl">Net Suit Value:</span> <span class="sv sv-big" id="pNet"></span>
+        <span class="sl">Suit Value:</span>
+        <span><span id="pNetBreakdown"></span> = <span class="sv sv-big" id="pNet"></span></span>
       </div>
 
       <hr class="sheet-divider">
@@ -932,9 +923,8 @@
   const pInitDate = document.getElementById('pInitDate');
   const pFilDate = document.getElementById('pFilDate');
   const pDays = document.getElementById('pDays');
-  const pDaily = document.getElementById('pDaily');
-  const pInterest = document.getElementById('pInterest');
   const pNet = document.getElementById('pNet');
+  const pNetBreakdown = document.getElementById('pNetBreakdown');
   const pCourtFee = document.getElementById('pCourtFee');
   const pAdvFee = document.getElementById('pAdvFee');
   const pDailySubstNum = document.getElementById('pDailySubstNum');
@@ -1111,9 +1101,8 @@
     pInitDate.textContent = formatDateDisplay(sIso);
     pFilDate.textContent = formatDateDisplay(fIso);
     pDays.textContent = days.toLocaleString('en-IN');
-    pDaily.textContent = formatINRDecimal(dailyInterest);
-    pInterest.textContent = formatINRDecimal(totalInterest);
     pNet.textContent = formatINR(Math.round(netAmount));
+    pNetBreakdown.textContent = formatINR(principal) + ' + ' + formatINRDecimal(totalInterest);
     pCourtFee.textContent = formatINR(court.fee);
     pAdvFee.textContent = formatINR(advocateHalf);
     pDailySubstNum.textContent = formatINR(principal) + ' × ' + ratePct + '%';
