@@ -23,7 +23,7 @@
   }
   .container {
     width: 100%;
-    max-width: 560px;
+    max-width: 620px;
     background: #232830;
     border: 1px solid #2e343d;
     border-radius: 10px;
@@ -32,7 +32,7 @@
   }
   header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     padding-bottom: 22px;
     border-bottom: 1px solid #2e343d;
   }
@@ -48,6 +48,15 @@
     color: #8a93a1;
     letter-spacing: 0.2px;
   }
+  .section-label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8a93a1;
+    font-weight: 600;
+    margin: 22px 0 12px;
+  }
+  .section-label:first-of-type { margin-top: 0; }
   label {
     display: block;
     font-size: 13px;
@@ -101,6 +110,69 @@
   input.error {
     border-color: #c0524a;
     box-shadow: 0 0 0 3px rgba(192,82,74,0.15);
+  }
+  .account-card {
+    background: #1f242c;
+    border: 1px solid #2e343d;
+    border-radius: 8px;
+    padding: 16px 18px 8px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .account-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .account-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f0f3f8;
+    letter-spacing: 0.3px;
+  }
+  .account-remove {
+    background: transparent;
+    border: 1px solid #3a4150;
+    border-radius: 5px;
+    color: #b8c0cc;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .account-remove:hover {
+    background: #3a2a2a;
+    color: #d97870;
+    border-color: #6b3a35;
+  }
+  .account-remove:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .btn-add {
+    background: #2a2f38;
+    border: 1px dashed #4a5160;
+    border-radius: 6px;
+    color: #b8c0cc;
+    padding: 11px;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 18px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .btn-add:hover { background: #353c47; color: #f0f3f8; border-color: #5b7bd0; }
+  .btn-add:focus {
+    outline: none;
+    border-color: #5b7bd0;
+    box-shadow: 0 0 0 3px rgba(91,123,208,0.2);
   }
   .btn-row {
     display: flex;
@@ -209,6 +281,42 @@
     color: #f0f3f8;
     font-weight: 500;
   }
+  .account-result {
+    border-bottom: 1px dashed #2e343d;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+  .account-result:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+  .account-result-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f0f3f8;
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+  }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    color: #b8c0cc;
+    padding: 4px 0;
+  }
+  .total-row .v {
+    color: #f0f3f8;
+    font-weight: 500;
+  }
+  .total-row.grand {
+    border-top: 1px solid #2e343d;
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .total-row.grand .v {
+    font-size: 18px;
+    font-weight: 600;
+  }
   .copy-btn {
     background: #2a2f38;
     border: 1px solid #3a4150;
@@ -256,7 +364,7 @@
     text-align: center;
     letter-spacing: 0.2px;
     line-height: 1.6;
-    max-width: 560px;
+    max-width: 620px;
   }
   .hint {
     font-size: 11.5px;
@@ -289,6 +397,7 @@
     .result-value { font-size: 19px; word-break: break-all; }
     .result-header { gap: 10px; }
     .copy-btn { width: 34px; height: 34px; }
+    .account-card { padding: 14px 14px 4px; }
     footer { font-size: 11px; padding: 0 8px; }
   }
   @media (max-width: 340px) {
@@ -296,95 +405,6 @@
     .result-value { font-size: 17px; }
     .hint { font-size: 10.5px; }
   }
-
-  /* Modal */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: #232830;
-    border: 1px solid #3a4150;
-    border-radius: 10px;
-    padding: 28px 28px 24px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .modal h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #f0f3f8;
-    margin-bottom: 20px;
-    text-align: center;
-    letter-spacing: 0.3px;
-  }
-  .modal-field { margin-bottom: 14px; }
-  .modal-field label {
-    display: block;
-    font-size: 12.5px;
-    font-weight: 500;
-    color: #b8c0cc;
-    margin-bottom: 6px;
-    letter-spacing: 0.2px;
-  }
-  .modal-field input {
-    width: 100%;
-    background: #1a1d23;
-    border: 1px solid #353c47;
-    border-radius: 6px;
-    padding: 10px 12px;
-    color: #f0f3f8;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .modal-field input:focus {
-    border-color: #5b7bd0;
-    box-shadow: 0 0 0 3px rgba(91,123,208,0.18);
-  }
-  .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
-  .btn-modal-cancel {
-    flex: 1;
-    background: #2a2f38;
-    border: 1px solid #3a4150;
-    border-radius: 6px;
-    color: #b8c0cc;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
-    padding: 10px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-  .btn-modal-cancel:hover { background: #353c47; color: #f0f3f8; }
-  .btn-modal-print {
-    flex: 2;
-    background: #3a5089;
-    border: 1px solid #4a609e;
-    border-radius: 6px;
-    color: #f0f3f8;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
-    padding: 10px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    transition: background 0.15s;
-  }
-  .btn-modal-print:hover { background: #45599a; }
-  .btn-modal-print svg { width: 14px; height: 14px; }
 
   /* Print sheet — hidden on screen */
   .print-header { display: none; }
@@ -431,9 +451,9 @@
       print-color-adjust: exact;
     }
 
-    header, .input-row, .input-grid, .error-msg,
-    .btn-row, .hint, footer, .results,
-    .btn-print-row, .modal-overlay {
+    header, .section-label, .input-row, .input-grid, .error-msg,
+    .btn-row, .btn-add, .hint, footer, .results,
+    .btn-print-row, .account-card {
       display: none !important;
     }
 
@@ -458,13 +478,13 @@
       font-size: 22px;
       font-weight: 700;
       letter-spacing: 1px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     .sheet-row {
       font-size: 14px;
       color: #111;
-      margin-bottom: 11px;
+      margin-bottom: 10px;
       line-height: 1.5;
     }
 
@@ -477,7 +497,7 @@
     .sheet-dates {
       display: flex;
       align-items: baseline;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: nowrap;
       white-space: nowrap;
     }
@@ -486,30 +506,44 @@
 
     .sv {
       display: inline-block;
-      min-width: 110px;
+      min-width: 90px;
       border-bottom: 1px solid #888;
       padding: 0 4px 1px;
     }
 
     .sheet-spacer { height: 8px; display: block; }
 
+    .sheet-account-block {
+      margin: 14px 0 12px;
+      padding: 10px 14px 8px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .sheet-account-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #ccc;
+    }
+
     .sheet-formula-block {
-      margin-bottom: 11px;
+      margin-bottom: 10px;
     }
 
     .sheet-formula-line {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 14px;
-      margin-bottom: 7px;
+      font-size: 13px;
+      margin-bottom: 6px;
     }
 
     .sheet-formula-line:last-child { margin-bottom: 0; }
-
-    .sheet-subst-line {
-      padding-left: 112px;
-    }
 
     .sfrac {
       display: inline-flex;
@@ -522,17 +556,17 @@
     .snum {
       border-bottom: 1.5px solid #111;
       padding-bottom: 2px;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .sden {
-      font-size: 13px;
+      font-size: 12px;
       padding-top: 2px;
     }
 
     .sheet-net-row {
-      margin-top: 14px;
-      font-size: 15px;
+      margin-top: 10px;
+      font-size: 14px;
       font-weight: 700;
     }
 
@@ -546,11 +580,21 @@
     .sheet-divider {
       border: none;
       border-top: 1.5px solid #333;
-      margin: 16px 0;
+      margin: 14px 0;
+    }
+
+    .sheet-totals {
+      margin-top: 6px;
+    }
+
+    .sheet-totals .sheet-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
 
     .sheet-fee-block {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       page-break-inside: avoid;
       break-inside: avoid;
     }
@@ -592,25 +636,25 @@
       <p>Karnataka Court Fees &amp; Suits Valuation Act, 1958</p>
     </header>
 
-    <div class="input-row">
-      <label for="principal">Principal Amount (₹)</label>
-      <input type="text" id="principal" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 5,00,000">
-    </div>
-
-    <div class="input-row">
-      <label for="rate">Interest Rate (% p.a.)</label>
-      <input type="text" id="rate" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="e.g. 8.5">
-    </div>
-
+    <div class="section-label">Client Details</div>
     <div class="input-grid">
       <div>
-        <label for="initialDate">Initial Date</label>
-        <input type="date" id="initialDate" autocomplete="off">
+        <label for="clientName">Name</label>
+        <input type="text" id="clientName" autocomplete="off" spellcheck="false" placeholder="Client / party name">
       </div>
       <div>
-        <label for="filingDate">Filing Date</label>
-        <input type="date" id="filingDate" autocomplete="off">
+        <label for="bankName">Bank Name</label>
+        <input type="text" id="bankName" autocomplete="off" spellcheck="false" placeholder="Bank name">
       </div>
+    </div>
+
+    <div class="section-label">Accounts</div>
+    <div id="accountsContainer"></div>
+    <button type="button" class="btn-add" id="addAccountBtn">+ Add Account</button>
+
+    <div class="input-row">
+      <label for="advocateMisc">Advocate Misc Fees (₹) <span style="font-weight:400;color:#7d8694">— typist, clerical, etc.</span></label>
+      <input type="text" id="advocateMisc" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 2,000">
     </div>
 
     <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
@@ -631,37 +675,16 @@
         <div><span class="sl">Name:</span> <span class="sv" id="pName"></span></div>
         <div><span class="sl">Bank Name:</span> <span class="sv" id="pBank"></span></div>
       </div>
-      <div class="sheet-row">
-        <span class="sl">A/c no:</span> <span class="sv" id="pAcc"></span>
-      </div>
-      <div class="sheet-row">
-        <span class="sl">Amount:</span> <span class="sv" id="pAmount"></span>
-      </div>
-      <div class="sheet-row">
-        <span class="sl">Interest Rate:</span> <span class="sv" id="pRate"></span>
-      </div>
-      <div class="sheet-row sheet-dates">
-        <span><span class="sl">Initial Date:</span> <span class="sv" id="pInitDate"></span></span>
-        <span class="sl">to</span>
-        <span><span class="sl">Filing date:</span> <span class="sv" id="pFilDate"></span></span>
-        <span style="white-space:nowrap"><span class="sl">= No. of days:</span> <span class="sv" id="pDays"></span></span>
-      </div>
-      <div class="sheet-formula-block">
-        <div class="sheet-formula-line">
-          <span class="sl">Daily interest:</span>
-          <span class="sfrac"><span class="snum" id="pDailySubstNum"></span><span class="sden">365</span></span>
-          <span>= <span class="sv" id="pDailySubst"></span></span>
+
+      <div id="pAccountsContainer"></div>
+
+      <hr class="sheet-divider">
+
+      <div class="sheet-totals">
+        <div class="sheet-row sheet-net-row">
+          <span><span class="sl">Net Suit Value (Sum of Account Nets):</span></span>
+          <span class="sv sv-big" id="pTotal"></span>
         </div>
-      </div>
-      <div class="sheet-formula-block">
-        <div class="sheet-formula-line">
-          <span class="sl">Total interest:</span>
-          <span><span id="pTotalSubst"></span> = <span class="sv" id="pTotalSubstResult"></span></span>
-        </div>
-      </div>
-      <div class="sheet-row sheet-net-row">
-        <span class="sl">Suit Value:</span>
-        <span><span id="pNetBreakdown"></span> = <span class="sv sv-big" id="pNet"></span></span>
       </div>
 
       <hr class="sheet-divider">
@@ -672,7 +695,7 @@
         <div class="sheet-fee-amount" id="pCourtFee"></div>
       </div>
       <div class="sheet-fee-block">
-        <div class="sheet-fee-label">Advocate Fee &mdash; Initial Payment (&frac12;)</div>
+        <div class="sheet-fee-label">Advocate Fee &mdash; Initial Payment (&frac12;) + Misc</div>
         <div class="sheet-slab-text" id="pAdvSlab"></div>
         <div class="sheet-fee-amount" id="pAdvFee"></div>
       </div>
@@ -680,14 +703,13 @@
 
     <div class="results" id="results" aria-live="polite">
       <div class="result-card">
-        <div class="result-label">Interest &amp; Net Amount</div>
-        <div class="result-slab" id="interestSlab"></div>
-        <div class="breakdown-grid">
-          <div class="breakdown-item"><div class="k">Days</div><div class="v" id="daysValue">0</div></div>
-          <div class="breakdown-item"><div class="k">Daily Interest</div><div class="v" id="dailyValue">₹0</div></div>
-          <div class="breakdown-item"><div class="k">Total Interest</div><div class="v" id="interestValue">₹0</div></div>
-          <div class="breakdown-item"><div class="k">Net (Suit Value)</div><div class="v" id="netValue">₹0</div></div>
-        </div>
+        <div class="result-label">Per-Account Breakdown</div>
+        <div id="accountResults"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-label">Net Suit Value</div>
+        <div class="total-row grand"><span>Sum of Account Net Amounts</span><span class="v" id="totalNetValue">₹0</span></div>
       </div>
 
       <div class="result-card">
@@ -706,7 +728,7 @@
       </div>
 
       <div class="result-card">
-        <div class="result-label">Advocate Fee — Initial Payment (½)</div>
+        <div class="result-label">Advocate Fee — Initial Payment (½) + Misc</div>
         <div class="result-slab" id="advocateFeeSlab"></div>
         <div class="result-header">
           <div class="result-value" id="advocateFeeValue">₹0</div>
@@ -736,35 +758,6 @@
   <footer>
     As per Karnataka Court Fees &amp; Suits Valuation Act, 1958 | Rule 100, Karnataka Civil Rules
   </footer>
-
-  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <h3 id="modalTitle">Client Details</h3>
-      <div class="modal-field">
-        <label for="modalName">Name</label>
-        <input type="text" id="modalName" autocomplete="off" spellcheck="false" placeholder="Client / party name">
-      </div>
-      <div class="modal-field">
-        <label for="modalBank">Bank Name</label>
-        <input type="text" id="modalBank" autocomplete="off" spellcheck="false" placeholder="Bank name">
-      </div>
-      <div class="modal-field">
-        <label for="modalAcc">A/c No.</label>
-        <input type="text" id="modalAcc" autocomplete="off" spellcheck="false" placeholder="Account number">
-      </div>
-      <div class="modal-btn-row">
-        <button type="button" class="btn-modal-cancel" id="modalCancel">Cancel</button>
-        <button type="button" class="btn-modal-print" id="modalPrint">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-          Print Sheet
-        </button>
-      </div>
-    </div>
-  </div>
 
 <script>
 (function () {
@@ -887,57 +880,7 @@
     return Math.round((end - start) / 86400000);
   }
 
-  const principalInput = document.getElementById('principal');
-  const rateInput = document.getElementById('rate');
-  const initialDateInput = document.getElementById('initialDate');
-  const filingDateInput = document.getElementById('filingDate');
-  const calcBtn = document.getElementById('calcBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  const results = document.getElementById('results');
-  const interestSlab = document.getElementById('interestSlab');
-  const daysValue = document.getElementById('daysValue');
-  const dailyValue = document.getElementById('dailyValue');
-  const interestValue = document.getElementById('interestValue');
-  const netValue = document.getElementById('netValue');
-  const courtFeeValue = document.getElementById('courtFeeValue');
-  const courtFeeSlab = document.getElementById('courtFeeSlab');
-  const advocateFeeValue = document.getElementById('advocateFeeValue');
-  const advocateFeeSlab = document.getElementById('advocateFeeSlab');
-  const copyCourt = document.getElementById('copyCourt');
-  const copyAdvocate = document.getElementById('copyAdvocate');
-  const copyCourtFeedback = document.getElementById('copyCourtFeedback');
-  const copyAdvocateFeedback = document.getElementById('copyAdvocateFeedback');
-  const printBtn = document.getElementById('printBtn');
-  const modalOverlay = document.getElementById('modalOverlay');
-  const modalName = document.getElementById('modalName');
-  const modalBank = document.getElementById('modalBank');
-  const modalAcc = document.getElementById('modalAcc');
-  const modalCancel = document.getElementById('modalCancel');
-  const modalPrint = document.getElementById('modalPrint');
-  const pName = document.getElementById('pName');
-  const pBank = document.getElementById('pBank');
-  const pAcc = document.getElementById('pAcc');
-  const pAmount = document.getElementById('pAmount');
-  const pRate = document.getElementById('pRate');
-  const pInitDate = document.getElementById('pInitDate');
-  const pFilDate = document.getElementById('pFilDate');
-  const pDays = document.getElementById('pDays');
-  const pNet = document.getElementById('pNet');
-  const pNetBreakdown = document.getElementById('pNetBreakdown');
-  const pCourtFee = document.getElementById('pCourtFee');
-  const pAdvFee = document.getElementById('pAdvFee');
-  const pDailySubstNum = document.getElementById('pDailySubstNum');
-  const pDailySubst = document.getElementById('pDailySubst');
-  const pTotalSubst = document.getElementById('pTotalSubst');
-  const pTotalSubstResult = document.getElementById('pTotalSubstResult');
-  const pCourtSlab = document.getElementById('pCourtSlab');
-  const pAdvSlab = document.getElementById('pAdvSlab');
-
-  let courtFeeRaw = 0;
-  let advocateHalfRaw = 0;
-
-  // Indian-numbering input formatter for principal (preserves caret).
+  // Indian-numbering caret-preserving formatter for integer-only inputs.
   function countDigits(str, upto) {
     let n = 0;
     for (let i = 0; i < upto && i < str.length; i++) {
@@ -956,28 +899,28 @@
     }
     return str.length;
   }
-  principalInput.addEventListener('keydown', function (e) {
-    const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
-    if (allowed.indexOf(e.key) !== -1) return;
-    if (e.ctrlKey || e.metaKey) return;
-    if (!/^[0-9]$/.test(e.key)) e.preventDefault();
-  });
-  principalInput.addEventListener('input', function () {
-    const prev = principalInput.value;
-    const selStart = principalInput.selectionStart || 0;
-    const digitsBefore = countDigits(prev, selStart);
-    const digitsOnly = prev.replace(/[^0-9]/g, '').replace(/^0+(?=\d)/, '');
-    const formatted = digitsOnly === '' ? '' : Number(digitsOnly).toLocaleString('en-IN');
-    if (formatted !== prev) {
-      principalInput.value = formatted;
-      const newPos = caretAfterNthDigit(formatted, digitsBefore);
-      try { principalInput.setSelectionRange(newPos, newPos); } catch (e) {}
-    }
-    clearErrorState();
-  });
-
-  // Decimal-only constraint for rate.
-  function constrainDecimal(el) {
+  function attachIntFormatter(el) {
+    el.addEventListener('keydown', function (e) {
+      const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
+      if (allowed.indexOf(e.key) !== -1) return;
+      if (e.ctrlKey || e.metaKey) return;
+      if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+    });
+    el.addEventListener('input', function () {
+      const prev = el.value;
+      const selStart = el.selectionStart || 0;
+      const digitsBefore = countDigits(prev, selStart);
+      const digitsOnly = prev.replace(/[^0-9]/g, '').replace(/^0+(?=\d)/, '');
+      const formatted = digitsOnly === '' ? '' : Number(digitsOnly).toLocaleString('en-IN');
+      if (formatted !== prev) {
+        el.value = formatted;
+        const newPos = caretAfterNthDigit(formatted, digitsBefore);
+        try { el.setSelectionRange(newPos, newPos); } catch (e) {}
+      }
+      clearErrorState();
+    });
+  }
+  function attachDecimalConstraint(el) {
     el.addEventListener('keydown', function (e) {
       const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter','Escape'];
       if (allowed.indexOf(e.key) !== -1) return;
@@ -987,102 +930,302 @@
     });
     el.addEventListener('input', clearErrorState);
   }
-  constrainDecimal(rateInput);
 
-  initialDateInput.addEventListener('input', clearErrorState);
-  filingDateInput.addEventListener('input', clearErrorState);
+  const clientNameInput = document.getElementById('clientName');
+  const bankNameInput = document.getElementById('bankName');
+  const accountsContainer = document.getElementById('accountsContainer');
+  const addAccountBtn = document.getElementById('addAccountBtn');
+  const advocateMiscInput = document.getElementById('advocateMisc');
+  const calcBtn = document.getElementById('calcBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const results = document.getElementById('results');
+  const accountResults = document.getElementById('accountResults');
+  const totalNetValue = document.getElementById('totalNetValue');
+  const courtFeeValue = document.getElementById('courtFeeValue');
+  const courtFeeSlab = document.getElementById('courtFeeSlab');
+  const advocateFeeValue = document.getElementById('advocateFeeValue');
+  const advocateFeeSlab = document.getElementById('advocateFeeSlab');
+  const copyCourt = document.getElementById('copyCourt');
+  const copyAdvocate = document.getElementById('copyAdvocate');
+  const copyCourtFeedback = document.getElementById('copyCourtFeedback');
+  const copyAdvocateFeedback = document.getElementById('copyAdvocateFeedback');
+  const printBtn = document.getElementById('printBtn');
+  const pName = document.getElementById('pName');
+  const pBank = document.getElementById('pBank');
+  const pAccountsContainer = document.getElementById('pAccountsContainer');
+  const pTotal = document.getElementById('pTotal');
+  const pCourtSlab = document.getElementById('pCourtSlab');
+  const pAdvSlab = document.getElementById('pAdvSlab');
+  const pCourtFee = document.getElementById('pCourtFee');
+  const pAdvFee = document.getElementById('pAdvFee');
+
+  attachIntFormatter(advocateMiscInput);
+
+  let courtFeeRaw = 0;
+  let advocateFinalRaw = 0;
+  let accountCounter = 0;
+
+  function renumberAccountCards() {
+    const cards = accountsContainer.querySelectorAll('.account-card');
+    cards.forEach((card, idx) => {
+      const title = card.querySelector('.account-card-title');
+      if (title) title.textContent = 'Account #' + (idx + 1);
+      const removeBtn = card.querySelector('.account-remove');
+      if (removeBtn) removeBtn.disabled = (cards.length <= 1);
+    });
+  }
+
+  function addAccountCard(focusFirst) {
+    accountCounter++;
+    const card = document.createElement('div');
+    card.className = 'account-card';
+    card.innerHTML =
+      '<div class="account-card-header">' +
+        '<span class="account-card-title">Account</span>' +
+        '<button type="button" class="account-remove" aria-label="Remove account">&times;</button>' +
+      '</div>' +
+      '<div class="input-row">' +
+        '<label>A/c No.</label>' +
+        '<input type="text" class="acc-number" autocomplete="off" spellcheck="false" placeholder="Account number">' +
+      '</div>' +
+      '<div class="input-row">' +
+        '<label>Principal Amount (₹)</label>' +
+        '<input type="text" class="acc-principal" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 5,00,000">' +
+      '</div>' +
+      '<div class="input-row">' +
+        '<label>Interest Rate (% p.a.)</label>' +
+        '<input type="text" class="acc-rate" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="e.g. 8.5">' +
+      '</div>' +
+      '<div class="input-grid">' +
+        '<div>' +
+          '<label>Initial Date</label>' +
+          '<input type="date" class="acc-init" autocomplete="off">' +
+        '</div>' +
+        '<div>' +
+          '<label>Filing Date</label>' +
+          '<input type="date" class="acc-filing" autocomplete="off">' +
+        '</div>' +
+      '</div>' +
+      '<div class="input-row">' +
+        '<label>Misc Fees (₹) <span style="font-weight:400;color:#7d8694">— notice fees etc., added to this account\'s net</span></label>' +
+        '<input type="text" class="acc-misc" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 1,000">' +
+      '</div>';
+    accountsContainer.appendChild(card);
+
+    const principalEl = card.querySelector('.acc-principal');
+    const rateEl = card.querySelector('.acc-rate');
+    const initEl = card.querySelector('.acc-init');
+    const filEl = card.querySelector('.acc-filing');
+    const numEl = card.querySelector('.acc-number');
+    const miscEl = card.querySelector('.acc-misc');
+    attachIntFormatter(principalEl);
+    attachDecimalConstraint(rateEl);
+    attachIntFormatter(miscEl);
+    initEl.addEventListener('input', clearErrorState);
+    filEl.addEventListener('input', clearErrorState);
+    numEl.addEventListener('input', clearErrorState);
+
+    card.querySelector('.account-remove').addEventListener('click', function () {
+      const cards = accountsContainer.querySelectorAll('.account-card');
+      if (cards.length <= 1) return;
+      card.remove();
+      renumberAccountCards();
+      clearErrorState();
+    });
+
+    renumberAccountCards();
+    if (focusFirst) {
+      setTimeout(function () { numEl.focus(); }, 30);
+    }
+    return card;
+  }
+
+  addAccountBtn.addEventListener('click', function () { addAccountCard(true); });
 
   function clearErrorState() {
     if (errorMsg.textContent) {
       errorMsg.textContent = '';
-      [principalInput, rateInput, initialDateInput, filingDateInput]
-        .forEach(el => el.classList.remove('error'));
+      document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
     }
   }
 
   function showError(msg, fields) {
     errorMsg.textContent = msg;
-    [principalInput, rateInput, initialDateInput, filingDateInput]
-      .forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
     (fields || []).forEach(el => el.classList.add('error'));
     results.classList.remove('visible');
   }
 
   function clearAll() {
-    principalInput.value = '';
-    rateInput.value = '';
-    initialDateInput.value = '';
-    filingDateInput.value = '';
+    clientNameInput.value = '';
+    bankNameInput.value = '';
+    advocateMiscInput.value = '';
+    accountsContainer.innerHTML = '';
+    accountCounter = 0;
+    addAccountCard(false);
     errorMsg.textContent = '';
-    [principalInput, rateInput, initialDateInput, filingDateInput]
-      .forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
     results.classList.remove('visible');
     clearBtn.classList.remove('visible');
-    principalInput.focus();
+    clientNameInput.focus();
+  }
+
+  function readAccount(card, idx) {
+    const numEl = card.querySelector('.acc-number');
+    const principalEl = card.querySelector('.acc-principal');
+    const rateEl = card.querySelector('.acc-rate');
+    const initEl = card.querySelector('.acc-init');
+    const filEl = card.querySelector('.acc-filing');
+    const miscEl = card.querySelector('.acc-misc');
+
+    const label = 'Account #' + (idx + 1);
+    const accNo = numEl.value.trim();
+    const pRaw = principalEl.value.replace(/,/g, '').trim();
+    const rRaw = rateEl.value.trim();
+    const sIso = initEl.value;
+    const fIso = filEl.value;
+    const mRaw = miscEl.value.replace(/,/g, '').trim();
+
+    if (pRaw === '') return { error: label + ': enter principal amount.', field: principalEl };
+    const principal = Number(pRaw);
+    if (!isFinite(principal) || isNaN(principal) || principal <= 0)
+      return { error: label + ': principal must be positive.', field: principalEl };
+
+    if (rRaw === '') return { error: label + ': enter interest rate.', field: rateEl };
+    const ratePct = Number(rRaw);
+    if (!isFinite(ratePct) || isNaN(ratePct) || ratePct < 0)
+      return { error: label + ': rate must be zero or positive.', field: rateEl };
+
+    if (!sIso) return { error: label + ': enter initial date.', field: initEl };
+    if (!fIso) return { error: label + ': enter filing date.', field: filEl };
+
+    const days = daysBetween(sIso, fIso);
+    if (days <= 0) return { error: label + ': filing date must be after initial date.', field: filEl };
+
+    let misc = 0;
+    if (mRaw !== '') {
+      misc = Number(mRaw);
+      if (!isFinite(misc) || isNaN(misc) || misc < 0)
+        return { error: label + ': misc fees must be zero or positive.', field: miscEl };
+    }
+
+    const rateDec = ratePct / 100;
+    const dailyInterest = (principal * rateDec) / 365;
+    const totalInterest = dailyInterest * days;
+    const netAmount = principal + totalInterest + misc;
+
+    return {
+      label, accNo, principal, ratePct, sIso, fIso, misc,
+      days, dailyInterest, totalInterest, netAmount
+    };
+  }
+
+  function renderAccountResult(a) {
+    const accInfo = a.accNo
+      ? '<span style="color:#8a93a1;font-weight:400;margin-left:8px">A/c ' + escapeHtml(a.accNo) + '</span>'
+      : '';
+    const miscPart = a.misc > 0 ? ' + Misc ' + hl(a.misc) : '';
+    return '' +
+      '<div class="account-result">' +
+        '<div class="account-result-title">' + escapeHtml(a.label) + accInfo + '</div>' +
+        '<div class="result-slab">Daily SI = ' + hl(a.dailyInterest.toFixed(2)) + ' · ' +
+          a.days.toLocaleString('en-IN') + ' days · Interest = ' + hl(a.totalInterest.toFixed(2)) +
+          ' · Net = Principal + Interest' + miscPart + ' = ' + hl(Math.round(a.netAmount)) + '</div>' +
+        '<div class="breakdown-grid">' +
+          '<div class="breakdown-item"><div class="k">Days</div><div class="v">' + a.days.toLocaleString('en-IN') + '</div></div>' +
+          '<div class="breakdown-item"><div class="k">Daily Interest</div><div class="v">' + formatINRDecimal(a.dailyInterest) + '</div></div>' +
+          '<div class="breakdown-item"><div class="k">Total Interest</div><div class="v">' + formatINRDecimal(a.totalInterest) + '</div></div>' +
+          '<div class="breakdown-item"><div class="k">Misc Fees</div><div class="v">' + formatINR(a.misc) + '</div></div>' +
+          '<div class="breakdown-item" style="grid-column:1/-1"><div class="k">Net Amount</div><div class="v">' + formatINR(Math.round(a.netAmount)) + '</div></div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderPrintAccount(a, idx) {
+    const accLabel = escapeHtml(a.label) + (a.accNo ? ' — A/c No. ' + escapeHtml(a.accNo) : '');
+    return '' +
+      '<div class="sheet-account-block">' +
+        '<div class="sheet-account-title">' + accLabel + '</div>' +
+        '<div class="sheet-row sheet-two">' +
+          '<div><span class="sl">Amount:</span> <span class="sv">' + formatINR(a.principal) + '</span></div>' +
+          '<div><span class="sl">Interest Rate:</span> <span class="sv">' + escapeHtml(String(a.ratePct)) + '% p.a.</span></div>' +
+        '</div>' +
+        '<div class="sheet-row sheet-dates">' +
+          '<span><span class="sl">Initial Date:</span> <span class="sv">' + formatDateDisplay(a.sIso) + '</span></span>' +
+          '<span class="sl">to</span>' +
+          '<span><span class="sl">Filing date:</span> <span class="sv">' + formatDateDisplay(a.fIso) + '</span></span>' +
+          '<span style="white-space:nowrap"><span class="sl">= No. of days:</span> <span class="sv">' + a.days.toLocaleString('en-IN') + '</span></span>' +
+        '</div>' +
+        '<div class="sheet-formula-block">' +
+          '<div class="sheet-formula-line">' +
+            '<span class="sl">Daily interest:</span>' +
+            '<span class="sfrac"><span class="snum">' + formatINR(a.principal) + ' × ' + escapeHtml(String(a.ratePct)) + '%</span><span class="sden">365</span></span>' +
+            '<span>= <span class="sv">' + formatINRDecimal(a.dailyInterest) + '</span></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sheet-formula-block">' +
+          '<div class="sheet-formula-line">' +
+            '<span class="sl">Total interest:</span>' +
+            '<span>' + formatINRDecimal(a.dailyInterest) + ' × ' + a.days.toLocaleString('en-IN') + ' days = <span class="sv">' + formatINRDecimal(a.totalInterest) + '</span></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sheet-row sheet-net-row">' +
+          '<span class="sl">Net Amount:</span> ' +
+          '<span>' + formatINR(a.principal) + ' + ' + formatINRDecimal(a.totalInterest) +
+            (a.misc > 0 ? ' + ' + formatINR(a.misc) + ' (misc)' : '') +
+            ' = <span class="sv sv-big">' + formatINR(Math.round(a.netAmount)) + '</span></span>' +
+        '</div>' +
+      '</div>';
   }
 
   function doCalculate() {
-    const pRaw = principalInput.value.replace(/,/g, '').trim();
-    const rRaw = rateInput.value.trim();
-    const sIso = initialDateInput.value;
-    const fIso = filingDateInput.value;
+    const cards = accountsContainer.querySelectorAll('.account-card');
+    if (cards.length === 0) return showError('Add at least one account.', []);
 
-    if (pRaw === '') return showError('Please enter the principal amount.', [principalInput]);
-    const principal = Number(pRaw);
-    if (!isFinite(principal) || isNaN(principal) || principal <= 0)
-      return showError('Principal must be a positive number.', [principalInput]);
+    const accounts = [];
+    for (let i = 0; i < cards.length; i++) {
+      const res = readAccount(cards[i], i);
+      if (res.error) return showError(res.error, [res.field]);
+      accounts.push(res);
+    }
 
-    if (rRaw === '') return showError('Please enter the interest rate.', [rateInput]);
-    const ratePct = Number(rRaw);
-    if (!isFinite(ratePct) || isNaN(ratePct) || ratePct < 0)
-      return showError('Interest rate must be zero or positive.', [rateInput]);
-
-    if (!sIso) return showError('Please enter the initial date.', [initialDateInput]);
-    if (!fIso) return showError('Please enter the filing date.', [filingDateInput]);
-
-    const days = daysBetween(sIso, fIso);
-    if (days <= 0)
-      return showError('Filing date must be after the initial date.', [initialDateInput, filingDateInput]);
+    const advMiscRaw = advocateMiscInput.value.replace(/,/g, '').trim();
+    let advMisc = 0;
+    if (advMiscRaw !== '') {
+      advMisc = Number(advMiscRaw);
+      if (!isFinite(advMisc) || isNaN(advMisc) || advMisc < 0)
+        return showError('Advocate misc fees must be zero or positive.', [advocateMiscInput]);
+    }
 
     clearErrorState();
 
-    const rateDec = ratePct / 100;
-    // Per advocate workflow: Interest = P × (days/365) × R, equivalently
-    // (P × R / 365) × days. Days count includes initial date, excludes
-    // filing date → simply (filing − initial).
-    const dailyInterest = (principal * rateDec) / 365;
-    const totalInterest = dailyInterest * days;
-    const netAmount = principal + totalInterest;
+    const totalNet = accounts.reduce((s, a) => s + a.netAmount, 0);
+    const totalNetRounded = Math.round(totalNet);
 
-    const court = calculateCourtFee(netAmount);
-    const advocate = calculateAdvocateFee(netAmount);
+    const court = calculateCourtFee(totalNetRounded);
+    const advocate = calculateAdvocateFee(totalNetRounded);
     const advocateHalf = Math.round(advocate.fee / 2);
+    const advocateFinal = advocateHalf + advMisc;
 
     courtFeeRaw = court.fee;
-    advocateHalfRaw = advocateHalf;
+    advocateFinalRaw = advocateFinal;
 
-    daysValue.textContent = days.toLocaleString('en-IN');
-    dailyValue.textContent = formatINRDecimal(dailyInterest);
-    interestValue.textContent = formatINRDecimal(totalInterest);
-    netValue.textContent = formatINR(Math.round(netAmount));
-
-    interestSlab.innerHTML =
-      'Daily SI = <span class="hl">' + formatINRDecimal(dailyInterest) + '</span>'
-      + ' (P × R ÷ 365) · '
-      + days.toLocaleString('en-IN') + ' days × daily = '
-      + '<span class="hl">' + formatINRDecimal(totalInterest) + '</span>'
-      + ' interest · Net = Principal + Interest = '
-      + hl(Math.round(netAmount));
+    accountResults.innerHTML = accounts.map(renderAccountResult).join('');
+    totalNetValue.textContent = formatINR(totalNetRounded);
 
     courtFeeValue.textContent = formatINR(court.fee);
-    const courtSlabHtml = describeSlab(courtSlabs, Math.round(netAmount));
-    courtFeeSlab.innerHTML = courtSlabHtml;
+    const courtSlabHtml = describeSlab(courtSlabs, totalNetRounded);
+    courtFeeSlab.innerHTML = courtSlabHtml + ' · Computed on Net Suit Value ' + hl(totalNetRounded);
 
-    advocateFeeValue.textContent = formatINR(advocateHalf);
-    let advText = describeSlab(advocateSlabs, Math.round(netAmount));
-    if (advText) advText += ' · Full advocate fee ' + hl(advocate.fee) + ', half = ' + hl(advocateHalf);
+    advocateFeeValue.textContent = formatINR(advocateFinal);
+    let advText = describeSlab(advocateSlabs, totalNetRounded);
+    if (advText) {
+      advText += ' · Full ' + hl(advocate.fee) + ', half = ' + hl(advocateHalf);
+      if (advMisc > 0) advText += ' + Advocate Misc ' + hl(advMisc) + ' = ' + hl(advocateFinal);
+    }
     if (advText && advocate.fee === 500) {
-      const v = Math.round(netAmount);
+      const v = totalNetRounded;
       const computed = (v <= 5000) ? v * 0.10
         : (v <= 10000) ? 500 + (v - 5000) * 0.075
         : (v <= 20000) ? 875 + (v - 10000) * 0.055
@@ -1093,22 +1236,15 @@
     }
     advocateFeeSlab.innerHTML = advText;
 
+    // Print sheet
+    pName.textContent = clientNameInput.value.trim() || '';
+    pBank.textContent = bankNameInput.value.trim() || '';
+    pAccountsContainer.innerHTML = accounts.map(renderPrintAccount).join('');
+    pTotal.textContent = formatINR(totalNetRounded);
     pCourtSlab.innerHTML = courtSlabHtml;
     pAdvSlab.innerHTML = advText;
-
-    pAmount.textContent = formatINR(principal);
-    pRate.textContent = ratePct + '% p.a.';
-    pInitDate.textContent = formatDateDisplay(sIso);
-    pFilDate.textContent = formatDateDisplay(fIso);
-    pDays.textContent = days.toLocaleString('en-IN');
-    pNet.textContent = formatINR(Math.round(netAmount));
-    pNetBreakdown.textContent = formatINR(principal) + ' + ' + formatINRDecimal(totalInterest);
     pCourtFee.textContent = formatINR(court.fee);
-    pAdvFee.textContent = formatINR(advocateHalf);
-    pDailySubstNum.textContent = formatINR(principal) + ' × ' + ratePct + '%';
-    pDailySubst.textContent = formatINRDecimal(dailyInterest);
-    pTotalSubst.textContent = formatINRDecimal(dailyInterest) + ' × ' + days.toLocaleString('en-IN') + ' days';
-    pTotalSubstResult.textContent = formatINRDecimal(totalInterest);
+    pAdvFee.textContent = formatINR(advocateFinal);
 
     results.classList.add('visible');
     clearBtn.classList.add('visible');
@@ -1116,58 +1252,21 @@
 
   calcBtn.addEventListener('click', doCalculate);
   clearBtn.addEventListener('click', clearAll);
-
-  function openModal() {
-    modalName.value = '';
-    modalBank.value = '';
-    modalAcc.value = '';
-    modalOverlay.classList.add('open');
-    setTimeout(function () { modalName.focus(); }, 50);
-  }
-
-  function closeModal() {
-    modalOverlay.classList.remove('open');
-  }
-
-  function doPrint() {
-    pName.textContent = modalName.value.trim() || '';
-    pBank.textContent = modalBank.value.trim() || '';
-    pAcc.textContent = modalAcc.value.trim() || '';
-    closeModal();
-    window.print();
-  }
-
-  printBtn.addEventListener('click', openModal);
-  modalCancel.addEventListener('click', closeModal);
-  modalPrint.addEventListener('click', doPrint);
-
-  modalOverlay.addEventListener('click', function (e) {
-    if (e.target === modalOverlay) closeModal();
-  });
-
-  [modalName, modalBank, modalAcc].forEach(function (inp) {
-    inp.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); doPrint(); }
-      if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
-    });
-  });
+  printBtn.addEventListener('click', function () { window.print(); });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       if (e.target === copyCourt || e.target === copyAdvocate || e.target === printBtn) return;
-      if (modalOverlay.classList.contains('open')) return;
+      if (e.target === addAccountBtn) return;
+      if (e.target && e.target.classList && e.target.classList.contains('account-remove')) return;
       const tag = (e.target && e.target.tagName) || '';
       if (tag === 'INPUT' || tag === 'BODY' || e.target === calcBtn) {
         e.preventDefault();
         doCalculate();
       }
     } else if (e.key === 'Escape') {
-      if (modalOverlay.classList.contains('open')) {
-        closeModal();
-      } else {
-        e.preventDefault();
-        clearAll();
-      }
+      e.preventDefault();
+      clearAll();
     }
   });
 
@@ -1207,9 +1306,11 @@
   }
 
   bindCopy(copyCourt, () => courtFeeRaw, copyCourtFeedback);
-  bindCopy(copyAdvocate, () => advocateHalfRaw, copyAdvocateFeedback);
+  bindCopy(copyAdvocate, () => advocateFinalRaw, copyAdvocateFeedback);
 
-  principalInput.focus();
+  // Seed with first account card.
+  addAccountCard(false);
+  clientNameInput.focus();
 })();
 </script>
 </body>
