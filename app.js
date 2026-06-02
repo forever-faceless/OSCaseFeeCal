@@ -13,6 +13,50 @@
     return d + '/' + m + '/' + y;
   }
 
+  // Auto-insert "/" as the user types. Slash is appended the moment the 2nd
+  // (and 4th) digit lands, but only when the value is growing — so backspacing
+  // through a slash actually removes it instead of re-adding.
+  function attachDateInput(el, onInput) {
+    let prev = el.value;
+    el.addEventListener('input', function () {
+      const growing = el.value.length > prev.length;
+      const digits = el.value.replace(/\D/g, '').slice(0, 8);
+      let out;
+      if (digits.length >= 5) {
+        out = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
+      } else if (digits.length === 4 && growing) {
+        out = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/';
+      } else if (digits.length >= 3) {
+        out = digits.slice(0, 2) + '/' + digits.slice(2);
+      } else if (digits.length === 2 && growing) {
+        out = digits + '/';
+      } else {
+        out = digits;
+      }
+      if (el.value !== out) el.value = out;
+      prev = el.value;
+      if (onInput) onInput();
+    });
+  }
+
+  // Parse "dd/mm/yyyy" or "dd/mm/yy" (yy → 20yy). Returns a status object so
+  // the caller can distinguish empty / malformed / impossible-calendar-date.
+  function parseDateInput(str) {
+    if (!str || !str.trim()) return { status: 'empty' };
+    const parts = str.trim().split('/');
+    if (parts.length !== 3) return { status: 'format' };
+    let [dd, mm, yy] = parts;
+    if (!/^\d{1,2}$/.test(dd) || !/^\d{1,2}$/.test(mm) || !/^\d+$/.test(yy)) return { status: 'format' };
+    if (yy.length === 2) yy = '20' + yy;
+    if (yy.length !== 4) return { status: 'format' };
+    const d = +dd, m = +mm, y = +yy;
+    if (m < 1 || m > 12 || d < 1 || d > 31) return { status: 'calendar' };
+    const t = new Date(Date.UTC(y, m - 1, d));
+    if (t.getUTCFullYear() !== y || t.getUTCMonth() !== m - 1 || t.getUTCDate() !== d) return { status: 'calendar' };
+    const pad = n => String(n).padStart(2, '0');
+    return { status: 'ok', iso: y + '-' + pad(m) + '-' + pad(d) };
+  }
+
   // Whole days between two yyyy-mm-dd strings, treating dates as UTC midnight
   // to avoid DST artifacts. Per spec: include initial date, exclude filing date,
   // which is exactly (filing - initial) in days.
@@ -95,11 +139,11 @@
       '<div class="input-grid">' +
         '<div>' +
           '<label>Initial Date</label>' +
-          '<input type="date" class="acc-init" autocomplete="off">' +
+          '<input type="text" class="acc-init" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="dd/mm/yyyy" maxlength="10">' +
         '</div>' +
         '<div>' +
           '<label>Filing Date</label>' +
-          '<input type="date" class="acc-filing" autocomplete="off">' +
+          '<input type="text" class="acc-filing" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="dd/mm/yyyy" maxlength="10">' +
         '</div>' +
       '</div>' +
       '<div class="input-row">' +
@@ -117,8 +161,8 @@
     attachExpressionFormatter(principalEl, clearErrorState);
     attachDecimalConstraint(rateEl, clearErrorState);
     attachExpressionFormatter(miscEl, clearErrorState);
-    initEl.addEventListener('input', clearErrorState);
-    filEl.addEventListener('input', clearErrorState);
+    attachDateInput(initEl, clearErrorState);
+    attachDateInput(filEl, clearErrorState);
     numEl.addEventListener('input', clearErrorState);
 
     card.querySelector('.account-remove').addEventListener('click', function () {
@@ -177,8 +221,10 @@
     const label = 'Account #' + (idx + 1);
     const accNo = numEl.value.trim();
     const rRaw = rateEl.value.trim();
-    const sIso = initEl.value;
-    const fIso = filEl.value;
+    const sParsed = parseDateInput(initEl.value);
+    const fParsed = parseDateInput(filEl.value);
+    const sIso = sParsed.iso;
+    const fIso = fParsed.iso;
 
     const principalVal = evaluateExpression(principalEl.value);
     if (principalVal === null) return { error: label + ': enter principal amount.', field: principalEl };
@@ -191,8 +237,12 @@
     if (!isFinite(ratePct) || isNaN(ratePct) || ratePct < 0)
       return { error: label + ': rate must be zero or positive.', field: rateEl };
 
-    if (!sIso) return { error: label + ': enter initial date.', field: initEl };
-    if (!fIso) return { error: label + ': enter filing date.', field: filEl };
+    if (sParsed.status === 'empty') return { error: label + ': enter initial date.', field: initEl };
+    if (sParsed.status === 'format') return { error: label + ': initial date must be dd/mm/yyyy.', field: initEl };
+    if (sParsed.status === 'calendar') return { error: label + ': initial date is not a valid calendar date.', field: initEl };
+    if (fParsed.status === 'empty') return { error: label + ': enter filing date.', field: filEl };
+    if (fParsed.status === 'format') return { error: label + ': filing date must be dd/mm/yyyy.', field: filEl };
+    if (fParsed.status === 'calendar') return { error: label + ': filing date is not a valid calendar date.', field: filEl };
 
     const days = daysBetween(sIso, fIso);
     if (days <= 0) return { error: label + ': filing date must be after initial date.', field: filEl };
